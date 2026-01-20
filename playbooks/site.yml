@@ -1,0 +1,7 @@
+- hosts: baremetal
+  become: yes
+  roles:
+    - common
+    - docker
+    - nginx
+    - app
