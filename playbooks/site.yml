@@ -7,5 +7,6 @@
     - redis
     - app
     - node-exporter
+    - prometheus
     - grafana
     - k6
