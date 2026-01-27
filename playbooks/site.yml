@@ -1,7 +1,9 @@
-- hosts: baremetal
+- hosts: server
   become: yes
   roles:
     - common
     - docker
     - nginx
     - app
+    - grafana
+    - k6
