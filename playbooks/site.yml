@@ -4,6 +4,7 @@
     - common
     - docker
     - nginx
+    - redis
     - app
     - grafana
     - k6
