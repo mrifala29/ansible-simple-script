@@ -6,5 +6,6 @@
     - nginx
     - redis
     - app
+    - node-exporter
     - grafana
     - k6
