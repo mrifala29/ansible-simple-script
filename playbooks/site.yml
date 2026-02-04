@@ -130,5 +130,5 @@
   hosts: apps
   become: true
   roles:
-    - role: apps/app
+    - role: apps/application
       tags: [apps]

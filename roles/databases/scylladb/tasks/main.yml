@@ -1,21 +1,21 @@
----
-- name: Add ScyllaDB GPG key
-  apt_key:
-    url: https://repositories.scylladb.com/scylla/repo_key
-    state: present
+# ---
+# - name: Add ScyllaDB GPG key
+#   apt_key:
+#     url: https://repositories.scylladb.com/scylla/repo_key
+#     state: present
 
-- name: Add ScyllaDB repository
-  apt_repository:
-    repo: deb https://repositories.scylladb.com/scylla/scylla-5.4/ubuntu jammy main
-    state: present
+# - name: Add ScyllaDB repository
+#   apt_repository:
+#     repo: deb https://repositories.scylladb.com/scylla/scylla-5.4/ubuntu jammy main
+#     state: present
 
-- name: Install ScyllaDB
-  apt:
-    name: scylla
-    state: present
-    update_cache: yes
+# - name: Install ScyllaDB
+#   apt:
+#     name: scylla
+#     state: present
+#     update_cache: yes
 
-- name: Enable ScyllaDB service
-  systemd:
-    name: scylla-server
-    enabled: yes
+# - name: Enable ScyllaDB service
+#   systemd:
+#     name: scylla-server
+#     enabled: yes

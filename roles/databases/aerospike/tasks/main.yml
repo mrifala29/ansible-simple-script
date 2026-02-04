@@ -1,22 +1,23 @@
----
-- name: Add Aerospike GPG key
-  apt_key:
-    url: https://www.aerospike.com/artifacts/aerospike-server-community/gpg
-    state: present
+# ---
+# - name: Download Aerospike GPG key
+#   get_url:
+#     url: https://aerospike.com/artifacts/aerospike-server-community/gpg
+#     dest: /usr/share/keyrings/aerospike.gpg
+#     mode: '0644'
 
-- name: Add Aerospike repository
-  apt_repository:
-    repo: deb https://www.aerospike.com/artifacts/aerospike-server-community/7.0/ubuntu22.04 stable main
-    state: present
+# - name: Add Aerospike repository
+#   apt_repository:
+#     repo: deb [signed-by=/usr/share/keyrings/aerospike.gpg] https://aerospike.com/artifacts/aerospike-server-community/7.0/ubuntu22.04 stable main
+#     state: present
 
-- name: Install Aerospike
-  apt:
-    name: aerospike-server-community
-    state: present
-    update_cache: yes
+# - name: Install Aerospike
+#   apt:
+#     name: aerospike-server-community
+#     state: present
+#     update_cache: yes
 
-- name: Enable and start Aerospike
-  systemd:
-    name: aerospike
-    enabled: yes
-    state: started
+# - name: Enable and start Aerospike
+#   systemd:
+#     name: aerospike
+#     enabled: yes
+#     state: started
