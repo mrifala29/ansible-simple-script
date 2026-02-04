@@ -1,12 +1,134 @@
-- hosts: server
-  become: yes
+---
+# BASE LAYER
+- name: Base system setup
+  hosts: all
+  become: true
   roles:
-    - common
-    - docker
-    - nginx
-    - redis
-    - app
-    - node-exporter
-    - prometheus
-    - grafana
-    - k6
+    - role: base/common
+      tags: [base, common]
+
+    - role: base/docker
+      tags: [base, docker]
+
+
+# NETWORK / EDGE
+- name: Network components
+  hosts: network
+  become: true
+  roles:
+    - role: network/nginx
+      tags: [network, nginx]
+
+
+# PLATFORM
+- name: Platform services
+  hosts: platform
+  become: true
+  roles:
+    - role: platform/gitlab-ee
+      tags: [platform, gitlab]
+
+    - role: platform/kind
+      tags: [platform, kind, kubernetes]
+
+
+# DATABASES
+- name: Database services
+  hosts: databases
+  become: true
+  roles:
+    - role: databases/postgres
+      tags: [databases, postgres]
+
+    - role: databases/redis
+      tags: [databases, redis]
+
+    - role: databases/elasticsearch
+      tags: [databases, elasticsearch]
+
+    - role: databases/kibana
+      tags: [databases, kibana]
+
+    - role: databases/aerospike
+      tags: [databases, aerospike]
+
+    - role: databases/yugabytedb
+      tags: [databases, yugabytedb]
+
+    - role: databases/scylladb
+      tags: [databases, scylladb]
+
+    - role: databases/tigerbeetle
+      tags: [databases, tigerbeetle]
+
+    - role: databases/ferretdb
+      tags: [databases, ferretdb]
+
+
+# MESSAGING
+- name: Messaging services
+  hosts: messaging
+  become: true
+  roles:
+    - role: messaging/rabbitmq
+      tags: [messaging, rabbitmq]
+
+
+# STORAGE
+- name: Storage services
+  hosts: storage
+  become: true
+  roles:
+    - role: storage/minio
+      tags: [storage, minio]
+
+
+# IAM / SECURITY
+- name: IAM services
+  hosts: iam
+  become: true
+  roles:
+    - role: iam/keycloak
+      tags: [iam, keycloak]
+
+
+# OBSERVABILITY
+- name: Observability stack
+  hosts: observability
+  become: true
+  roles:
+    - role: observability/prometheus
+      tags: [observability, prometheus]
+
+    - role: observability/grafana
+      tags: [observability, grafana]
+
+    - role: observability/node-exporter
+      tags: [observability, node-exporter]
+
+    - role: observability/loki
+      tags: [observability, loki]
+
+    - role: observability/tempo
+      tags: [observability, tempo]
+
+    - role: observability/mimir
+      tags: [observability, mimir]
+
+
+# TESTING (NON-PROD)
+- name: Testing tools
+  hosts: testing
+  become: true
+  roles:
+    - role: testing/k6
+      tags: [testing, k6]
+
+
+# APPLICATIONS
+- name: Applications
+  hosts: apps
+  become: true
+  roles:
+    - role: apps/app
+      tags: [apps]
