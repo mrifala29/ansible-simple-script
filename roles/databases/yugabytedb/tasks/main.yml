@@ -1,0 +1,21 @@
+---
+- name: Add YugabyteDB GPG key
+  apt_key:
+    url: https://download.yugabyte.com/repo/apt/key.gpg
+    state: present
+
+- name: Add YugabyteDB repository
+  apt_repository:
+    repo: deb https://download.yugabyte.com/repo/apt stable main
+    state: present
+
+- name: Install YugabyteDB
+  apt:
+    name: yugabyte-2.20
+    state: present
+    update_cache: yes
+
+- name: Enable YugabyteDB service
+  systemd:
+    name: yb-master
+    enabled: yes
