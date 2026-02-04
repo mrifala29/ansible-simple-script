@@ -21,15 +21,15 @@
 
 
 # PLATFORM
-- name: Platform services
-  hosts: platform
-  become: true
-  roles:
-    - role: platform/gitlab-ee
-      tags: [platform, gitlab]
+# - name: Platform services
+#   hosts: platform
+#   become: true
+#   roles:
+#     - role: platform/gitlab-ee
+#       tags: [platform, gitlab]
 
-    - role: platform/kind
-      tags: [platform, kind, kubernetes]
+#     - role: platform/kind
+#       tags: [platform, kind, kubernetes]
 
 
 # DATABASES
