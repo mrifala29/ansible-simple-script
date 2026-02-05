@@ -20,7 +20,7 @@
       tags: [network, nginx]
 
 
-PLATFORM
+# PLATFORM
 - name: Platform services
   hosts: platform
   become: true
