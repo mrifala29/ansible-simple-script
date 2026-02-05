@@ -1,4 +1,3 @@
----
 - name: Install required packages
   apt:
     name:
@@ -29,7 +28,4 @@
   notify: reconfigure gitlab
 
 - name: Ensure GitLab is running
-  service:
-    name: gitlab-runsvdir
-    state: started
-    enabled: yes
+  command: gitlab-ctl start
