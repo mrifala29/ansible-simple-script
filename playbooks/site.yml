@@ -20,13 +20,13 @@
       tags: [network, nginx]
 
 
-# PLATFORM
-# - name: Platform services
-#   hosts: platform
-#   become: true
-#   roles:
-#     - role: platform/gitlab-ee
-#       tags: [platform, gitlab]
+PLATFORM
+- name: Platform services
+  hosts: platform
+  become: true
+  roles:
+    - role: platform/gitlab
+      tags: [platform, gitlab]
 
 #     - role: platform/kind
 #       tags: [platform, kind, kubernetes]
