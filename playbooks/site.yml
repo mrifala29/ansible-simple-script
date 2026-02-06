@@ -28,8 +28,17 @@
     - role: platform/gitlab
       tags: [platform, gitlab]
 
-#     - role: platform/kind
-#       tags: [platform, kind, kubernetes]
+
+# ORCHESTRATION
+- name: Orchestration services
+  hosts: orchestration
+  become: true
+  roles:
+    - role: orchestration/kind
+      tags: [orchestration, kind]
+
+    - role: orchestration/kubernetes
+      tags: [orchestration, kubernetes]
 
 
 # DATABASES
