@@ -48,7 +48,7 @@
       -Xmx4g
   notify: Restart Elasticsearch
 
-  - name: Ensure base jvm.options exists
+- name: Ensure base jvm.options exists
   copy:
     dest: /etc/elasticsearch/jvm.options
     content: |

@@ -85,11 +85,11 @@
 
 # STORAGE
 - name: Storage services
-  hosts: storage
+  hosts: storages
   become: true
   roles:
-    - role: storage/minio
-      tags: [storage, minio]
+    - role: storages/minio
+      tags: [storages, minio]
 
 
 # IAM / SECURITY
