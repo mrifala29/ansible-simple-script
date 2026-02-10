@@ -1,0 +1,24 @@
+---
+- name: Ensure {{ service_name }} directories exist
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - "{{ service_data_dir }}"
+    - "{{ service_compose_dir }}"
+
+- name: Render docker compose file for {{ service_name }}
+  template:
+    src: docker-compose.j2
+    dest: "{{ service_compose_dir }}/docker-compose.yml"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Start {{ service_name }} via docker compose v2
+  community.docker.docker_compose_v2:
+    project_src: "{{ service_compose_dir }}"
+    state: present

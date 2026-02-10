@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  {{ service_name }}:
+    image: {{ service_image }}
+    container_name: {{ service_name }}
+    ports:
+      - "{{ service_http_port }}:3200"
+      - "{{ service_grpc_port }}:4317"
+    volumes:
+      - {{ service_data_dir }}:/tempo
+    restart: always
