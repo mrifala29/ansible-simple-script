@@ -40,7 +40,7 @@
     mode: "0640"
   notify: Restart Elasticsearch
 
-  - name: Set heap size
+- name: Set heap size
   copy:
     dest: /etc/elasticsearch/jvm.options.d/heap.options
     content: |
