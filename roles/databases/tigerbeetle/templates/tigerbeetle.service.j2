@@ -6,9 +6,7 @@ After=network.target
 User={{ tigerbeetle_user }}
 Group={{ tigerbeetle_group }}
 ExecStart={{ tigerbeetle_install_dir }}/tigerbeetle start \
-  --cluster={{ tigerbeetle_cluster_id }} \
-  --replica={{ tigerbeetle_replica_id }} \
-  --listen=0.0.0.0:{{ tigerbeetle_port }} \
+  --addresses=127.0.0.1:{{ tigerbeetle_port }} \
   {{ tigerbeetle_data_dir }}/data.tigerbeetle
 Restart=always
 LimitNOFILE=1048576

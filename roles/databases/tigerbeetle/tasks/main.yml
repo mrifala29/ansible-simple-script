@@ -48,15 +48,31 @@
     group: "{{ tigerbeetle_group }}"
     mode: "0755"
 
+- name: Format TigerBeetle data file if not exists
+  command: >
+    {{ tigerbeetle_install_dir }}/tigerbeetle format
+    --replica=0 --replica-count=1
+    {{ tigerbeetle_data_dir }}/data.tigerbeetle
+  args:
+    creates: "{{ tigerbeetle_data_dir }}/data.tigerbeetle"
+  become: yes
+  become_user: "{{ tigerbeetle_user }}"
+
 - name: Install systemd service
   template:
     src: tigerbeetle.service.j2
     dest: /etc/systemd/system/tigerbeetle.service
-  notify: Restart tigerbeetle
+  notify:
+    - Reload systemd
+    - Restart tigerbeetle
 
-- name: Reload systemd
-  systemd:
-    daemon_reload: true
+- name: Ensure TigerBeetle data directory exists
+  file:
+    path: "{{ tigerbeetle_data_dir }}"
+    state: directory
+    owner: "{{ tigerbeetle_user }}"
+    group: "{{ tigerbeetle_group }}"
+    mode: "0755"
 
 - name: Enable and start TigerBeetle
   systemd:

@@ -1,5 +1,7 @@
----
+- name: Reload systemd
+  command: systemctl daemon-reload
+
 - name: Restart tigerbeetle
-  systemd:
+  service:
     name: tigerbeetle
     state: restarted
