@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  {{ service_name }}:
+    image: {{ service_image }}
+    container_name: {{ service_name }}
+    command: -config.file=/etc/loki/local-config.yaml
+    ports:
+      - "{{ service_http_port }}:3100"
+    volumes:
+      - {{ service_data_dir }}:/loki
+    restart: always
