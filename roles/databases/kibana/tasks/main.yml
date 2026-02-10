@@ -29,7 +29,7 @@
 
 - name: Deploy kibana.yml from template
   template:
-    src: kibana.yml.j2
+    src: kibana.service.j2
     dest: /etc/kibana/kibana.yml
     owner: root
     group: root
