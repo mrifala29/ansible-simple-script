@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  {{ service_name }}:
+    image: {{ service_image }}
+    container_name: {{ service_name }}
+    ports:
+      - "{{ service_http_port }}:9000"
+    volumes:
+      - {{ service_data_dir }}:/mimir
+    restart: always

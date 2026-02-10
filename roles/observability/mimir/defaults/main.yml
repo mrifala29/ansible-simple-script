@@ -1,0 +1,5 @@
+service_name: mimir
+service_data_dir: /opt/mimir/data
+service_compose_dir: /opt/mimir
+service_http_port: 9200
+service_image: grafana/mimir:2.1.0
