@@ -1,0 +1,6 @@
+kibana_version: ""
+kibana_port: 5601
+kibana_user: "elastic"
+kibana_password: "l1nkit240"
+elasticsearch_host: "http://127.0.0.1:9200"
+server_host: "0.0.0.0"
