@@ -39,7 +39,7 @@
 
 - name: Copy prometheus config
   template:
-    src: prometheus.yml.j2
+    src: prometheus.service.j2
     dest: /etc/prometheus/prometheus.yml
     owner: prometheus
     group: prometheus

@@ -13,32 +13,32 @@
 
 # NETWORK / EDGE
 - name: Network components
-  hosts: network
+  hosts: networks
   become: true
   roles:
-    - role: network/nginx
-      tags: [network, nginx]
+    - role: networks/nginx
+      tags: [networks, nginx]
 
 
 # PLATFORM
 - name: Platform services
-  hosts: platform
+  hosts: platforms
   become: true
   roles:
-    - role: platform/gitlab
-      tags: [platform, gitlab]
+    - role: platforms/gitlab
+      tags: [platforms, gitlab]
 
 
 # ORCHESTRATION
 - name: Orchestration services
-  hosts: orchestration
+  hosts: orchestrations
   become: true
   roles:
-    - role: orchestration/kind
-      tags: [orchestration, kind]
+    - role: orchestrations/kind
+      tags: [orchestrations, kind]
 
-    - role: orchestration/kubernetes
-      tags: [orchestration, kubernetes]
+    - role: orchestrations/kubernetes
+      tags: [orchestrations, kubernetes]
 
 
 # DATABASES
@@ -76,11 +76,11 @@
 
 # MESSAGING
 - name: Messaging services
-  hosts: messaging
+  hosts: messagings
   become: true
   roles:
-    - role: messaging/rabbitmq
-      tags: [messaging, rabbitmq]
+    - role: messagings/rabbitmq
+      tags: [messagings, rabbitmq]
 
 
 # STORAGE
@@ -127,11 +127,11 @@
 
 # TESTING (NON-PROD)
 - name: Testing tools
-  hosts: testing
+  hosts: testings
   become: true
   roles:
-    - role: testing/k6
-      tags: [testing, k6]
+    - role: testings/k6
+      tags: [testings, k6]
 
 
 # APPLICATIONS
