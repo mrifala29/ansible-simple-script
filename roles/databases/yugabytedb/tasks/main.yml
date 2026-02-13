@@ -1,21 +1,56 @@
-# ---
-# - name: Add YugabyteDB GPG key
-#   apt_key:
-#     url: https://download.yugabyte.com/repo/apt/key.gpg
-#     state: present
+---
+- name: Create yugabyte group
+  group:
+    name: "{{ yugabyte_group }}"
+    system: true
 
-# - name: Add YugabyteDB repository
-#   apt_repository:
-#     repo: deb https://download.yugabyte.com/repo/apt stable main
-#     state: present
+- name: Create yugabyte user
+  user:
+    name: "{{ yugabyte_user }}"
+    group: "{{ yugabyte_group }}"
+    system: true
+    shell: /sbin/nologin
 
-# - name: Install YugabyteDB
-#   apt:
-#     name: yugabyte-2.20
-#     state: present
-#     update_cache: yes
+- name: Create install directory
+  file:
+    path: "{{ yugabyte_install_dir }}"
+    state: directory
+    owner: "{{ yugabyte_user }}"
+    group: "{{ yugabyte_group }}"
 
-# - name: Enable YugabyteDB service
-#   systemd:
-#     name: yb-master
-#     enabled: yes
+- name: Download YugabyteDB
+  get_url:
+    url: "{{ yugabyte_download_url }}"
+    dest: "/tmp/yugabyte.tar.gz"
+
+- name: Extract YugabyteDB
+  unarchive:
+    src: "/tmp/yugabyte.tar.gz"
+    dest: "{{ yugabyte_install_dir }}"
+    remote_src: yes
+    owner: "{{ yugabyte_user }}"
+    group: "{{ yugabyte_group }}"
+
+- name: Create data directory
+  file:
+    path: "{{ yugabyte_data_dir }}"
+    state: directory
+    owner: "{{ yugabyte_user }}"
+    group: "{{ yugabyte_group }}"
+    mode: "0755"
+
+- name: Install systemd service
+  template:
+    src: yugabyted.service.j2
+    dest: /etc/systemd/system/yugabyted.service
+  notify: Restart yugabyted
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Enable and start YugabyteDB
+  systemd:
+    name: yugabyted
+    enabled: yes
+    state: started
