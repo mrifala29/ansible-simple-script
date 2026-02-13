@@ -1,0 +1,4 @@
+- name: Restart yugabyted
+  systemd:
+    name: yugabyted
+    state: restarted

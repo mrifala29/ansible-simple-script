@@ -1,0 +1,13 @@
+yugabyte_version: "2.20.0.0"
+
+yugabyte_user: yugabyte
+yugabyte_group: yugabyte
+
+yugabyte_install_dir: /opt/yugabyte
+yugabyte_data_dir: /var/lib/yugabyte
+
+yugabyte_rpc_port: 7100
+yugabyte_http_port: 7000
+yugabyte_sql_port: 5433
+
+yugabyte_download_url: "https://downloads.yugabyte.com/releases/{{ yugabyte_version }}/yugabyte-{{ yugabyte_version }}-linux-x86_64.tar.gz"
