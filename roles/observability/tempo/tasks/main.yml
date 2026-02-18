@@ -1,14 +1,55 @@
 ---
-- name: Ensure {{ service_name }} directories exist
+- name: Check if Tempo data directory exists
+  ansible.builtin.stat:
+    path: "{{ service_data_dir }}"
+  register: stat_data_dir
+
+- name: Remove {{ service_data_dir }} if it is a file
   file:
-    path: "{{ item }}"
+    path: "{{ service_data_dir }}"
+    state: absent
+  when: stat_data_dir.stat.exists and not stat_data_dir.stat.isdir
+  become: yes
+
+- name: Ensure {{ service_data_dir }} is a directory
+  file:
+    path: "{{ service_data_dir }}"
     state: directory
     owner: root
     group: root
     mode: "0755"
-  loop:
-    - "{{ service_data_dir }}"
-    - "{{ service_compose_dir }}"
+  become: yes
+
+- name: Check if Tempo compose directory exists
+  ansible.builtin.stat:
+    path: "{{ service_compose_dir }}"
+  register: stat_compose_dir
+
+- name: Remove {{ service_compose_dir }} if it is a file
+  file:
+    path: "{{ service_compose_dir }}"
+    state: absent
+  when: stat_compose_dir.stat.exists and not stat_compose_dir.stat.isdir
+  become: yes
+
+- name: Ensure {{ service_compose_dir }} is a directory
+  file:
+    path: "{{ service_compose_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  become: yes
+
+- name: Render tempo config
+  template:
+    src: tempo.yaml.j2
+    dest: "{{ service_compose_dir }}/tempo.yaml"
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Restart {{ service_name }} container
   become: yes
 
 - name: Render docker compose file for {{ service_name }}
