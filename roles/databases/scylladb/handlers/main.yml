@@ -1,5 +1,5 @@
 ---
 - name: Restart Scylla
-  systemd:
-    name: scylla-server
-    state: restarted
+  command: docker-compose up -d
+  args:
+    chdir: /opt/scylla

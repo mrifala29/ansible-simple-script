@@ -1,57 +1,16 @@
----
-- name: Install prerequisite packages
-  apt:
-    name:
-      - curl
-      - gnupg
-      - apt-transport-https
-      - lsb-release
-    state: present
-    update_cache: yes
+- name: Create Scylla directory
+  file:
+    path: /opt/scylla
+    state: directory
+    mode: '0755'
 
-- name: Add ScyllaDB GPG key
-  shell: |
-    curl -fsSL {{ scylla_repo_base }}/scylladb.gpg.key | gpg --dearmor -o /usr/share/keyrings/scylla-keyring.gpg
-  args:
-    creates: /usr/share/keyrings/scylla-keyring.gpg
-
-- name: Add ScyllaDB repository
-  copy:
-    dest: /etc/apt/sources.list.d/scylla.list
-    content: |
-      deb [signed-by=/usr/share/keyrings/scylla-keyring.gpg] {{ scylla_repo_base }} {{ ansible_distribution_release }} main
-
-- name: Update apt cache
-  apt:
-    update_cache: yes
-
-- name: Install Scylla package
-  apt:
-    name: scylla
-    state: present
-
-# Optional but recommended
-- name: Disable swap (required by Scylla)
-  command: swapoff -a
-  when: ansible_swaptotal_mb > 0
-
-- name: Comment swap entry in fstab
-  replace:
-    path: /etc/fstab
-    regexp: '^([^#].*\sswap\s+.*)$'
-    replace: '# \1'
-
-- name: Configure scylla.yaml
+- name: Deploy docker-compose file
   template:
-    src: scylla.yaml.j2
-    dest: /etc/scylla/scylla.yaml
-    owner: scylla
-    group: scylla
-    mode: '0644'
+    src: docker-compose.j2
+    dest: /opt/scylla/docker-compose.yml
   notify: Restart Scylla
 
-- name: Enable and start Scylla service
-  systemd:
-    name: scylla-server
-    enabled: yes
-    state: started
+- name: Run docker-compose
+  command: docker-compose up -d
+  args:
+    chdir: /opt/scylla

@@ -1,6 +1,10 @@
-scylla_cluster_name: "scylla-cluster"
-scylla_listen_address: "{{ ansible_host }}"
-scylla_rpc_address: "0.0.0.0"
-scylla_seed_nodes: "127.0.0.1"
+scylla_image: "scylladb/scylla:5.4"
+scylla_container_name: "scylla"
 
-scylla_repo_base: "https://repositories.scylladb.com/scylla/repo/ubuntu"
+scylla_data_dir: "/var/lib/scylla"
+
+scylla_memory: "1G"
+scylla_smp: 1
+
+scylla_ports:
+  - "9042:9042"
