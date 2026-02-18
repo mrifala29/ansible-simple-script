@@ -9,8 +9,10 @@ services:
       - "{{ service_grpc_port }}:4317"
     volumes:
       - "{{ service_data_dir }}:/tempo"
-      {%- if service_config_file is defined %}
+{% if service_config_file %}
       - "{{ service_config_file }}:/etc/tempo/tempo.yaml:ro"
-      {%- endif %}
-    command: {%- if service_config_file is defined %}-config.file=/etc/tempo/tempo.yaml{%- endif %}
+{% endif %}
+{% if service_config_file %}
+    command: -config.file=/etc/tempo/tempo.yaml
+{% endif %}
     restart: always

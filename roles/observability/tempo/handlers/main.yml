@@ -3,4 +3,4 @@
   community.docker.docker_compose_v2:
     project_src: "{{ service_compose_dir }}"
     state: restarted
-    detached: yes
+  become: yes
