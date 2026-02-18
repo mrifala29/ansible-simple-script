@@ -1,0 +1,16 @@
+cluster_name: "{{ scylla_cluster_name }}"
+
+listen_address: "{{ scylla_listen_address }}"
+rpc_address: "{{ scylla_rpc_address }}"
+seed_provider:
+  - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+    parameters:
+      - seeds: "{{ scylla_seed_nodes }}"
+
+data_file_directories:
+  - /var/lib/scylla/data
+
+commitlog_directory: /var/lib/scylla/commitlog
+hints_directory: /var/lib/scylla/hints
+
+endpoint_snitch: SimpleSnitch

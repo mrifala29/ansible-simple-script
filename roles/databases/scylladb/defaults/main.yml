@@ -1,0 +1,6 @@
+scylla_cluster_name: "scylla-cluster"
+scylla_listen_address: "{{ ansible_host }}"
+scylla_rpc_address: "0.0.0.0"
+scylla_seed_nodes: "127.0.0.1"
+
+scylla_repo_base: "https://repositories.scylladb.com/scylla/repo/ubuntu"

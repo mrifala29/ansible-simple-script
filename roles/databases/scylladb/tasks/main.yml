@@ -1,21 +1,57 @@
-# ---
-# - name: Add ScyllaDB GPG key
-#   apt_key:
-#     url: https://repositories.scylladb.com/scylla/repo_key
-#     state: present
+---
+- name: Install prerequisite packages
+  apt:
+    name:
+      - curl
+      - gnupg
+      - apt-transport-https
+      - lsb-release
+    state: present
+    update_cache: yes
 
-# - name: Add ScyllaDB repository
-#   apt_repository:
-#     repo: deb https://repositories.scylladb.com/scylla/scylla-5.4/ubuntu jammy main
-#     state: present
+- name: Add ScyllaDB GPG key
+  shell: |
+    curl -fsSL {{ scylla_repo_base }}/scylladb.gpg.key | gpg --dearmor -o /usr/share/keyrings/scylla-keyring.gpg
+  args:
+    creates: /usr/share/keyrings/scylla-keyring.gpg
 
-# - name: Install ScyllaDB
-#   apt:
-#     name: scylla
-#     state: present
-#     update_cache: yes
+- name: Add ScyllaDB repository
+  copy:
+    dest: /etc/apt/sources.list.d/scylla.list
+    content: |
+      deb [signed-by=/usr/share/keyrings/scylla-keyring.gpg] {{ scylla_repo_base }} {{ ansible_distribution_release }} main
 
-# - name: Enable ScyllaDB service
-#   systemd:
-#     name: scylla-server
-#     enabled: yes
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install Scylla package
+  apt:
+    name: scylla
+    state: present
+
+# Optional but recommended
+- name: Disable swap (required by Scylla)
+  command: swapoff -a
+  when: ansible_swaptotal_mb > 0
+
+- name: Comment swap entry in fstab
+  replace:
+    path: /etc/fstab
+    regexp: '^([^#].*\sswap\s+.*)$'
+    replace: '# \1'
+
+- name: Configure scylla.yaml
+  template:
+    src: scylla.yaml.j2
+    dest: /etc/scylla/scylla.yaml
+    owner: scylla
+    group: scylla
+    mode: '0644'
+  notify: Restart Scylla
+
+- name: Enable and start Scylla service
+  systemd:
+    name: scylla-server
+    enabled: yes
+    state: started
