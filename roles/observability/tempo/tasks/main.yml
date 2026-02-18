@@ -17,8 +17,11 @@
     owner: root
     group: root
     mode: "0644"
+  notify:
+    - Restart {{ service_name }} container
 
 - name: Start {{ service_name }} via docker compose v2
   community.docker.docker_compose_v2:
     project_src: "{{ service_compose_dir }}"
     state: present
+    detached: yes

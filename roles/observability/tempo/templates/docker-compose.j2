@@ -8,5 +8,9 @@ services:
       - "{{ service_http_port }}:3200"
       - "{{ service_grpc_port }}:4317"
     volumes:
-      - {{ service_data_dir }}:/tempo
+      - "{{ service_data_dir }}:/tempo"
+      {%- if service_config_file is defined %}
+      - "{{ service_config_file }}:/etc/tempo/tempo.yaml:ro"
+      {%- endif %}
+    command: {%- if service_config_file is defined %}-config.file=/etc/tempo/tempo.yaml{%- endif %}
     restart: always
