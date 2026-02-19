@@ -13,18 +13,21 @@ scylla_ports:
   - "9160:9160"
 
 
-aerospike_version: "7.0.0"
-aerospike_user: aerospike
-aerospike_group: aerospike
+aerospike_container_name: "aerospike"
+aerospike_image: "aerospike/aerospike-server:7.0.0.0"
+aerospike_base_dir: "/opt/aerospike"
+aerospike_data_dir: "/opt/aerospike/data"
+aerospike_log_dir: "/opt/aerospike/logs"
 aerospike_service_port: 3000
-aerospike_fabric_port: 3001
 aerospike_heartbeat_port: 3002
-aerospike_data_dir: /opt/aerospike/data
-aerospike_log_dir: /var/log/aerospike
-aerospike_namespace: test
-aerospike_memory_size: 1G
-aerospike_storage_file_size: 2G
-aerospike_cluster_name: infra-cluster
-aerospike_bind_address: "0.0.0.0"
+aerospike_fabric_port: 3001
+aerospike_info_port: 3003
+aerospike_ports:
+  - "3000:3000"
+  - "3001:3001"
+  - "3002:3002"
+  - "3003:3003"
+
+
 
 

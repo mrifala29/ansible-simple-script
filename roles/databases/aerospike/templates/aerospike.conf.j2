@@ -1,24 +1,30 @@
 service {
-    cluster-name {{ aerospike_cluster_name }}
-    user {{ aerospike_user }}
-    group {{ aerospike_group }}
+    user root
+    group root
+    paxos-single-replica-limit 1
+    pidfile /var/run/aerospike/asd.pid
+    service-threads 4
+    transaction-queues 4
+    transaction-threads-per-queue 4
+    proto-fd-max 15000
 }
 
 logging {
-    file {{ aerospike_log_dir }}/aerospike.log {
+    file /var/log/aerospike/aerospike.log {
         context any info
     }
 }
 
 network {
     service {
-        address {{ aerospike_bind_address }}
+        address any
         port {{ aerospike_service_port }}
     }
 
     heartbeat {
         mode mesh
         port {{ aerospike_heartbeat_port }}
+        mesh-seed-address-port {{ ansible_host }}:{{ aerospike_heartbeat_port }}
         interval 150
         timeout 10
     }
@@ -28,16 +34,13 @@ network {
     }
 
     info {
-        port 3003
+        port {{ aerospike_info_port }}
     }
 }
 
-namespace {{ aerospike_namespace }} {
-    replication-factor 1
-    memory-size {{ aerospike_memory_size }}
-
-    storage-engine device {
-        file {{ aerospike_data_dir }}/{{ aerospike_namespace }}.dat
-        filesize {{ aerospike_storage_file_size }}
-    }
+namespace test {
+    replication-factor 2
+    memory-size 4G
+    default-ttl 30d
+    storage-engine memory
 }
