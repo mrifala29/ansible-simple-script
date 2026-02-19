@@ -1,5 +1,8 @@
-service_name: loki
-service_data_dir: /opt/loki/data
-service_compose_dir: /opt/loki
-service_http_port: 3100
-service_image: grafana/loki:2.9.0
+loki_name: loki
+loki_image: grafana/loki:2.9.4
+
+loki_http_port: 3100
+
+loki_data_dir: /opt/loki/data
+loki_compose_dir: /opt/loki
+loki_config_dir: /opt/loki/config

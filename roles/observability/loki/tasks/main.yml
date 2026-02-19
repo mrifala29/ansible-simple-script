@@ -1,5 +1,5 @@
 ---
-- name: Ensure {{ service_name }} directories exist
+- name: Ensure loki directories exist
   file:
     path: "{{ item }}"
     state: directory
@@ -7,18 +7,29 @@
     group: root
     mode: "0755"
   loop:
-    - "{{ service_data_dir }}"
-    - "{{ service_compose_dir }}"
+    - "{{ loki_data_dir }}"
+    - "{{ loki_compose_dir }}"
+    - "{{ loki_config_dir }}"
 
-- name: Render docker compose file for {{ service_name }}
+- name: Render loki config
   template:
-    src: docker-compose.j2
-    dest: "{{ service_compose_dir }}/docker-compose.yml"
+    src: loki.yml.j2
+    dest: "{{ loki_config_dir }}/loki.yml"
     owner: root
     group: root
     mode: "0644"
+  notify: Restart loki
 
-- name: Start {{ service_name }} via docker compose v2
+- name: Render docker compose file for loki
+  template:
+    src: docker-compose.j2
+    dest: "{{ loki_compose_dir }}/docker-compose.yml"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart loki
+
+- name: Start loki via docker compose v2
   community.docker.docker_compose_v2:
-    project_src: "{{ service_compose_dir }}"
+    project_src: "{{ loki_compose_dir }}"
     state: present
