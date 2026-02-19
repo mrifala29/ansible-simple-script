@@ -1,0 +1,43 @@
+service {
+    cluster-name {{ aerospike_cluster_name }}
+    user {{ aerospike_user }}
+    group {{ aerospike_group }}
+}
+
+logging {
+    file {{ aerospike_log_dir }}/aerospike.log {
+        context any info
+    }
+}
+
+network {
+    service {
+        address {{ aerospike_bind_address }}
+        port {{ aerospike_service_port }}
+    }
+
+    heartbeat {
+        mode mesh
+        port {{ aerospike_heartbeat_port }}
+        interval 150
+        timeout 10
+    }
+
+    fabric {
+        port {{ aerospike_fabric_port }}
+    }
+
+    info {
+        port 3003
+    }
+}
+
+namespace {{ aerospike_namespace }} {
+    replication-factor 1
+    memory-size {{ aerospike_memory_size }}
+
+    storage-engine device {
+        file {{ aerospike_data_dir }}/{{ aerospike_namespace }}.dat
+        filesize {{ aerospike_storage_file_size }}
+    }
+}

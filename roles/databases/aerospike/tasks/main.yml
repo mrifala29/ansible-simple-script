@@ -1,23 +1,51 @@
-# ---
-# - name: Download Aerospike GPG key
-#   get_url:
-#     url: https://aerospike.com/artifacts/aerospike-server-community/gpg
-#     dest: /usr/share/keyrings/aerospike.gpg
-#     mode: '0644'
+---
 
-# - name: Add Aerospike repository
-#   apt_repository:
-#     repo: deb [signed-by=/usr/share/keyrings/aerospike.gpg] https://aerospike.com/artifacts/aerospike-server-community/7.0/ubuntu22.04 stable main
-#     state: present
+- name: Install required packages
+  apt:
+    name:
+      - docker.io
+      - python3-docker
+    state: present
+    update_cache: yes
 
-# - name: Install Aerospike
-#   apt:
-#     name: aerospike-server-community
-#     state: present
-#     update_cache: yes
+- name: Ensure docker service running
+  systemd:
+    name: docker
+    state: started
+    enabled: yes
 
-# - name: Enable and start Aerospike
-#   systemd:
-#     name: aerospike
-#     enabled: yes
-#     state: started
+- name: Create data directory
+  file:
+    path: "{{ aerospike_data_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Create log directory
+  file:
+    path: "{{ aerospike_log_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Deploy aerospike configuration
+  template:
+    src: aerospike.conf.j2
+    dest: "{{ aerospike_data_dir }}/aerospike.conf"
+    mode: "0644"
+  notify: Restart aerospike container
+
+- name: Pull Aerospike Docker image
+  community.docker.docker_image:
+    name: "{{ aerospike_image }}"
+    source: pull
+
+- name: Run Aerospike container
+  community.docker.docker_container:
+    name: "{{ aerospike_container_name }}"
+    image: "{{ aerospike_image }}"
+    state: started
+    restart_policy: always
+    ports: "{{ aerospike_ports }}"
+    volumes:
+      - "{{ aerospike_data_dir }}:/opt/aerospike/data"
+      - "{{ aerospike_log_dir }}:/var/log/aerospike"
+      - "{{ aerospike_data_dir }}/aerospike.conf:/etc/aerospike/aerospike.conf"

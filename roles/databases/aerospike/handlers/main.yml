@@ -1,0 +1,7 @@
+---
+
+- name: Restart aerospike container
+  community.docker.docker_container:
+    name: "{{ aerospike_container_name }}"
+    state: started
+    restart: true

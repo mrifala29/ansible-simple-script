@@ -1,0 +1,10 @@
+aerospike_image: aerospike/aerospike-server:latest
+aerospike_container_name: aerospike
+
+aerospike_data_dir: /opt/aerospike/data
+aerospike_log_dir: /var/log/aerospike
+
+aerospike_ports:
+  - "3000:3000"
+  - "3001:3001"
+  - "3002:3002"
