@@ -1,5 +1,5 @@
 inventory/baremetal.ini
-# inventory/group_vars
+inventory/group_vars
 
 .env
 
