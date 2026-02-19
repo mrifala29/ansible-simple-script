@@ -1,11 +1,11 @@
 services:
-  {{ service_name }}:
-    image: {{ service_image }}
-    container_name: {{ service_name }}
+  {{ mimir_name }}:
+    image: {{ mimir_image }}
+    container_name: {{ mimir_name }}
     command: -config.file=/etc/mimir/mimir.yaml
     ports:
-      - "{{ service_http_port }}:9000"
+      - "{{ mimir_http_port }}:9000"
     volumes:
-      - "{{ service_data_dir }}:/data"
-      - "{{ service_config_dir }}/mimir.yaml:/etc/mimir/mimir.yaml"
+      - "{{ mimir_data_dir }}:/data"
+      - "{{ mimir_config_dir }}/mimir.yaml:/etc/mimir/mimir.yaml"
     restart: unless-stopped

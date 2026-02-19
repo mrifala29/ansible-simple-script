@@ -7,14 +7,14 @@
     group: root
     mode: "0755"
   loop:
-    - "{{ service_data_dir }}"
-    - "{{ service_compose_dir }}"
-    - "{{ service_config_dir }}"
+    - "{{ mimir_data_dir }}"
+    - "{{ mimir_compose_dir }}"
+    - "{{ mimir_config_dir }}"
 
 - name: Render mimir config
   template:
     src: mimir.yaml.j2
-    dest: "{{ service_config_dir }}/mimir.yaml"
+    dest: "{{ mimir_config_dir }}/mimir.yaml"
     owner: root
     group: root
     mode: "0644"
