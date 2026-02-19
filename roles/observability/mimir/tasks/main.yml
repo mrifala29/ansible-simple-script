@@ -9,6 +9,16 @@
   loop:
     - "{{ service_data_dir }}"
     - "{{ service_compose_dir }}"
+    - "{{ service_config_dir }}"
+
+- name: Render mimir config
+  template:
+    src: mimir.yaml.j2
+    dest: "{{ service_config_dir }}/mimir.yaml"
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart mimir
 
 - name: Render docker compose file for {{ service_name }}
   template:
@@ -17,6 +27,7 @@
     owner: root
     group: root
     mode: "0644"
+  notify: Restart mimir
 
 - name: Start {{ service_name }} via docker compose v2
   community.docker.docker_compose_v2:

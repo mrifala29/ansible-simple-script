@@ -1,1 +1,7 @@
-# Put your variable to override the defaults of each roles
+# tempo
+service_image: grafana/tempo:latest
+service_http_port: 3200
+service_grpc_port: 4317
+
+mimir_image: grafana/mimir:latest
+mimir_http_port: 9600

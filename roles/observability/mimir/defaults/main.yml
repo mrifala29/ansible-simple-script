@@ -1,6 +1,6 @@
-service_name: mimir
-service_data_dir: /opt/mimir/data
-service_compose_dir: /opt/mimir
-service_http_port: 9500
-service_grpc_port: 9501
-service_image: grafana/mimir:2.1.0
+mimir_image: grafana/mimir:2.1.0
+mimir_http_port: 9500
+mimir_grpc_port: 9501
+mimir_data_dir: /opt/mimir/data
+mimir_compose_dir: /opt/mimir
+mimir_config_dir: /opt/mimir/config

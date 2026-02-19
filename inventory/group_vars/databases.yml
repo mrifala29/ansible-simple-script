@@ -1,1 +1,14 @@
-# Put your variable to override the defaults of each roles
+tigerbeetle_port: 3010
+
+
+yugabyte_version: "2.20.1.0"
+yugabyte_data_dir: /data/yugabyte
+
+
+scylla_image: "scylladb/scylla:5.4"
+scylla_memory: "2G"
+scylla_smp: 2
+scylla_ports:
+  - "9042:9042"
+  - "9160:9160"
+

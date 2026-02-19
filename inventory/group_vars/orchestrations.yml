@@ -1,1 +1,8 @@
-# Put your variable to override the defaults of each roles
+# Kubernetes core config
+kubernetes_version: "1.29.0"
+
+# CNI / networking
+pod_network_cidr: "10.244.0.0/16"
+
+# Cluster naming (optional tapi berguna)
+cluster_name: "baseline-cluster"
