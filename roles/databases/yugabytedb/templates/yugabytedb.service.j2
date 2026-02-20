@@ -3,18 +3,9 @@ Description=YugabyteDB
 After=network.target
 
 [Service]
-Type=forking
-User={{ yugabyte_user }}
-Group={{ yugabyte_group }}
-
-ExecStart={{ yugabyte_install_dir }}/yugabyte-{{ yugabyte_version }}/bin/yugabyted start \
-  --base_dir={{ yugabyte_data_dir }} \
-  --rpc_bind_addresses=0.0.0.0:{{ yugabyte_rpc_port }} \
-  --webserver_port={{ yugabyte_http_port }} \
-  --ysql_port={{ yugabyte_sql_port }}
-
-ExecStop={{ yugabyte_install_dir }}/yugabyte-{{ yugabyte_version }}/bin/yugabyted stop
-
+Type=simple
+User=yugabyte
+ExecStart=/usr/bin/yugabyted start --base_dir={{ yugabytedb_data_dir }} --daemon=false
 Restart=always
 LimitNOFILE=1048576
 

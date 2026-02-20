@@ -1,8 +1,15 @@
 tigerbeetle_port: 3010
 
 
-yugabyte_version: "2.20.1.0"
-yugabyte_data_dir: /data/yugabyte
+yugabytedb_version: "2.21.1.0"
+
+yugabytedb_install_dir: /opt/yugabyte
+yugabytedb_data_dir: /var/lib/yugabyte
+
+yugabytedb_master_port: 7000
+yugabytedb_tserver_port: 9000
+yugabytedb_ysql_port: 5433
+yugabytedb_ycql_port: 9042
 
 
 scylla_image: "scylladb/scylla:5.4"

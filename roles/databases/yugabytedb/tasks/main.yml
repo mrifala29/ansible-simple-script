@@ -1,56 +1,46 @@
----
-- name: Create yugabyte group
-  group:
-    name: "{{ yugabyte_group }}"
-    system: true
+- name: Install dependencies
+  apt:
+    name:
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+    update_cache: yes
 
-- name: Create yugabyte user
-  user:
-    name: "{{ yugabyte_user }}"
-    group: "{{ yugabyte_group }}"
-    system: true
-    shell: /sbin/nologin
+- name: Add YugabyteDB GPG key
+  apt_key:
+    url: https://downloads.yugabyte.com/apt/yugabyte-key.gpg
+    state: present
 
-- name: Create install directory
-  file:
-    path: "{{ yugabyte_install_dir }}"
-    state: directory
-    owner: "{{ yugabyte_user }}"
-    group: "{{ yugabyte_group }}"
+- name: Add YugabyteDB APT repository
+  apt_repository:
+    repo: "deb https://downloads.yugabyte.com/apt {{ ansible_distribution_release }} main"
+    state: present
+    filename: yugabyte
 
-- name: Download YugabyteDB
-  get_url:
-    url: "{{ yugabyte_download_url }}"
-    dest: "/tmp/yugabyte.tar.gz"
-
-- name: Extract YugabyteDB
-  unarchive:
-    src: "/tmp/yugabyte.tar.gz"
-    dest: "{{ yugabyte_install_dir }}"
-    remote_src: yes
-    owner: "{{ yugabyte_user }}"
-    group: "{{ yugabyte_group }}"
+- name: Install YugabyteDB
+  apt:
+    name: yugabyte
+    state: present
+    update_cache: yes
 
 - name: Create data directory
   file:
-    path: "{{ yugabyte_data_dir }}"
+    path: "{{ yugabytedb_data_dir }}"
     state: directory
-    owner: "{{ yugabyte_user }}"
-    group: "{{ yugabyte_group }}"
+    owner: yugabyte
+    group: yugabyte
     mode: "0755"
 
 - name: Install systemd service
   template:
-    src: yugabyted.service.j2
-    dest: /etc/systemd/system/yugabyted.service
-  notify: Restart yugabyted
-
-- name: Reload systemd
-  systemd:
-    daemon_reload: yes
+    src: yugabytedb.service.j2
+    dest: /etc/systemd/system/yugabytedb.service
+    mode: "0644"
+  notify: restart yugabytedb
 
 - name: Enable and start YugabyteDB
   systemd:
-    name: yugabyted
+    name: yugabytedb
     enabled: yes
     state: started
