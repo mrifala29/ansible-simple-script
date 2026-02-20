@@ -1,4 +1,2 @@
 - name: restart yugabytedb
-  service:
-    name: yugabytedb
-    state: restarted
+  command: docker compose -f {{ docker_compose_path }} restart

@@ -1,15 +1,15 @@
 tigerbeetle_port: 3010
 
 
-yugabytedb_version: "2.21.1.0"
-
-yugabytedb_install_dir: /opt/yugabyte
-yugabytedb_data_dir: /var/lib/yugabyte
-
+yugabytedb_version: "2.21.1.0-b271"
+yugabytedb_cluster_name: "prod-cluster"
+yugabytedb_data_dir: "/data/yugabytedb"
+yugabytedb_conf_dir: "/etc/yugabytedb"
 yugabytedb_master_port: 7000
 yugabytedb_tserver_port: 9000
+yugabytedb_yql_port: 9042
 yugabytedb_ysql_port: 5433
-yugabytedb_ycql_port: 9042
+docker_compose_path: "/etc/yugabytedb/docker-compose.yml"
 
 
 scylla_image: "scylladb/scylla:5.4"
@@ -30,7 +30,6 @@ aerospike_ports:
   - "4001:3001"
   - "4002:3002"
   - "4003:3003"
-
 aerospike_service_port: 3000
 aerospike_heartbeat_port: 3002
 aerospike_fabric_port: 3001

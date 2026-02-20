@@ -1,46 +1,31 @@
 - name: Install dependencies
   apt:
     name:
-      - curl
-      - gnupg
-      - lsb-release
+      - docker.io
+      - docker-compose-plugin
     state: present
-    update_cache: yes
+    update_cache: true
 
-- name: Add YugabyteDB GPG key
-  apt_key:
-    url: https://downloads.yugabyte.com/apt/yugabyte-key.gpg
-    state: present
-
-- name: Add YugabyteDB APT repository
-  apt_repository:
-    repo: "deb https://downloads.yugabyte.com/apt {{ ansible_distribution_release }} main"
-    state: present
-    filename: yugabyte
-
-- name: Install YugabyteDB
-  apt:
-    name: yugabyte
-    state: present
-    update_cache: yes
-
-- name: Create data directory
+- name: Create directories
   file:
-    path: "{{ yugabytedb_data_dir }}"
+    path: "{{ item }}"
     state: directory
-    owner: yugabyte
-    group: yugabyte
-    mode: "0755"
+    mode: '0755'
+  loop:
+    - "{{ yugabytedb_data_dir }}"
+    - "{{ yugabytedb_conf_dir }}"
 
-- name: Install systemd service
+- name: Generate yugabytedb config
   template:
-    src: yugabytedb.service.j2
-    dest: /etc/systemd/system/yugabytedb.service
-    mode: "0644"
+    src: yugabytedb.conf.j2
+    dest: "{{ yugabytedb_conf_dir }}/yugabytedb.conf"
   notify: restart yugabytedb
 
-- name: Enable and start YugabyteDB
-  systemd:
-    name: yugabytedb
-    enabled: yes
-    state: started
+- name: Generate docker-compose.yml
+  template:
+    src: docker-compose.j2
+    dest: "{{ docker_compose_path }}"
+  notify: restart yugabytedb
+
+- name: Start YugabyteDB
+  command: docker compose -f {{ docker_compose_path }} up -d

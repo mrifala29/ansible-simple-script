@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  yugabytedb:
+    image: yugabytedb/yugabyte:{{ yugabytedb_version }}
+    container_name: yugabytedb
+    command: >
+      bin/yugabyted start
+      --background=false
+      --master_flags="cluster_name={{ yugabytedb_cluster_name }}"
+      --tserver_flags="cluster_name={{ yugabytedb_cluster_name }}"
+    ports:
+      - "{{ yugabytedb_master_port }}:7000"
+      - "{{ yugabytedb_tserver_port }}:9000"
+      - "{{ yugabytedb_yql_port }}:9042"
+      - "{{ yugabytedb_ysql_port }}:5433"
+    volumes:
+      - "{{ yugabytedb_data_dir }}:/home/yugabyte/yb_data"
+      - "{{ yugabytedb_conf_dir }}/yugabytedb.conf:/home/yugabyte/conf/server.conf"
+    restart: always

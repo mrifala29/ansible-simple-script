@@ -1,8 +1,13 @@
-yugabytedb_version: "2.20.11.0"
+yugabytedb_version: "2.21.0.0-b545"
 
-yugabytedb_install_dir: "/opt/yugabyte"
-yugabytedb_data_dir: "/var/lib/yugabyte"
-yugabytedb_user: yugabyte
+yugabytedb_data_dir: "/opt/yugabytedb/data"
+yugabytedb_conf_dir: "/opt/yugabytedb/conf"
 
-yugabytedb_tarball: "yugabyte-{{ yugabytedb_version }}-linux-x86_64.tar.gz"
-yugabytedb_url: "https://github.com/yugabyte/yugabyte-db-dist/releases/download/v{{ yugabytedb_version }}/{{ yugabytedb_tarball }}"
+yugabytedb_master_port: 7000
+yugabytedb_tserver_port: 9000
+yugabytedb_yql_port: 9042
+yugabytedb_ysql_port: 5433
+
+yugabytedb_cluster_name: "yb-cluster"
+
+docker_compose_path: "/opt/yugabytedb/docker-compose.yml"
