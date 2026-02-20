@@ -1,10 +1,21 @@
-- name: Install dependencies
+- name: Install Docker
   apt:
-    name:
-      - docker.io
-      - docker-compose-plugin
+    name: docker.io
     state: present
     update_cache: true
+
+- name: Install docker-compose v2 (binary)
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-linux-x86_64"
+    dest: /usr/local/bin/docker-compose
+    mode: '0755'
+
+- name: Create docker-compose symlink
+  file:
+    src: /usr/local/bin/docker-compose
+    dest: /usr/bin/docker-compose
+    state: link
+    force: yes
 
 - name: Create directories
   file:
@@ -14,6 +25,7 @@
   loop:
     - "{{ yugabytedb_data_dir }}"
     - "{{ yugabytedb_conf_dir }}"
+    - "{{ docker_compose_path | dirname }}"
 
 - name: Generate yugabytedb config
   template:
@@ -28,4 +40,4 @@
   notify: restart yugabytedb
 
 - name: Start YugabyteDB
-  command: docker compose -f {{ docker_compose_path }} up -d
+  command: docker-compose -f {{ docker_compose_path }} up -d

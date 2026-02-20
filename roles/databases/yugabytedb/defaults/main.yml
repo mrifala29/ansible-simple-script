@@ -11,3 +11,4 @@ yugabytedb_ysql_port: 5433
 yugabytedb_cluster_name: "yb-cluster"
 
 docker_compose_path: "/opt/yugabytedb/docker-compose.yml"
+docker_compose_version: "v2.25.0"
