@@ -1,31 +1,52 @@
-- name: Install required packages
+---
+- name: Install dependencies
   apt:
     name:
       - curl
-      - openssh-server
       - ca-certificates
-      - tzdata
+      - gnupg
     state: present
     update_cache: yes
 
-- name: Add GitLab repository
-  shell: |
-    curl -fsSL https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh | bash
+- name: Download GitLab GPG key
+  command: >
+    curl -4 -fsSL https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey
+    -o /usr/share/keyrings/gitlab_gitlab-ce-archive-keyring.asc
   args:
-    creates: /etc/apt/sources.list.d/gitlab_gitlab-ce.list
+    creates: /usr/share/keyrings/gitlab_gitlab-ce-archive-keyring.asc
+
+- name: Convert GPG key
+  command: >
+    gpg --dearmor
+    -o /usr/share/keyrings/gitlab_gitlab-ce-archive-keyring.gpg
+    /usr/share/keyrings/gitlab_gitlab-ce-archive-keyring.asc
+  args:
+    creates: /usr/share/keyrings/gitlab_gitlab-ce-archive-keyring.gpg
+
+- name: Add GitLab repository
+  copy:
+    dest: /etc/apt/sources.list.d/gitlab_gitlab-ce.list
+    content: |
+      deb [signed-by=/usr/share/keyrings/gitlab_gitlab-ce-archive-keyring.gpg] https://packages.gitlab.com/gitlab/gitlab-ce/ubuntu {{ ansible_distribution_release }} main
+    mode: '0644'
+
+# - name: Update apt cache
+#   apt:
+#     update_cache: yes
 
 - name: Install GitLab CE
   apt:
     name: gitlab-ce
     state: present
-    update_cache: yes
 
-- name: Configure GitLab external URL
-  lineinfile:
-    path: /etc/gitlab/gitlab.rb
-    regexp: '^external_url'
-    line: "external_url 'http://{{ gitlab_external_url }}'"
-  notify: reconfigure gitlab
+- name: Ensure /etc/gitlab exists
+  file:
+    path: /etc/gitlab
+    state: directory
+    mode: '0755'
 
-- name: Ensure GitLab is running
-  command: gitlab-ctl start
+- name: Deploy gitlab.rb
+  template:
+    src: gitlab.rb.j2
+    dest: /etc/gitlab/gitlab.rb
+  notify: Reconfigure GitLab

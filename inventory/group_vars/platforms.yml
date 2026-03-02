@@ -1,1 +1,5 @@
-gitlab_external_url: 103.230.81.70
+gitlab_external_url: "103.230.81.70"
+gitlab_port: 8080
+
+gitlab_root_email: "rndteamlinkit360@gmail.com"
+gitlab_root_password: "l1nkit240"
