@@ -1,3 +1,8 @@
+**/docker-compose.yml
+**/docker-compose.j2
+**/Dockerfile
+**/Dockerfile.j2
+
 inventory/baremetal.ini
 inventory/group_vars
 

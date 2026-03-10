@@ -28,6 +28,15 @@
     - role: platforms/gitlab
       tags: [platforms, gitlab]
 
+    - role: platforms/n8n
+      tags: [platforms, n8n]
+
+    - role: platforms/openmetadata
+      tags: [platforms, openmetadata]
+
+    - role: platforms/superset
+      tags: [platforms, superset]
+
 
 # ORCHESTRATION
 - name: Orchestration services
