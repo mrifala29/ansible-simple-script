@@ -4,6 +4,14 @@
     state: directory
     mode: "0755"
 
+- name: Create Superset home directory
+  file:
+    path: "{{ superset_dir }}/superset_home"
+    state: directory
+    owner: 1000
+    group: 1000
+    mode: "0755"
+
 - name: Copy docker compose
   template:
     src: docker-compose.j2
