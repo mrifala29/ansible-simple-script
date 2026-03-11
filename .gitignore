@@ -3,6 +3,9 @@
 **/Dockerfile
 **/Dockerfile.j2
 
+**/**.pem
+**/**.der
+
 inventory/baremetal.ini
 inventory/group_vars
 
