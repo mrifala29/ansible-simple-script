@@ -82,6 +82,9 @@
     - role: databases/ferretdb
       tags: [databases, ferretdb]
 
+    - role: databases/qdrant
+      tags: [databases, qdrant]
+
 
 # MESSAGING
 - name: Messaging services
