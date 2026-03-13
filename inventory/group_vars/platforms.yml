@@ -3,3 +3,7 @@ gitlab_port: 8080
 
 gitlab_root_email: "rndteamlinkit360@gmail.com"
 gitlab_root_password: "l1nkit240"
+
+n8n_ports:
+  - "5678:5678"
+n8n_base_dir: /opt/platforms/n8n
