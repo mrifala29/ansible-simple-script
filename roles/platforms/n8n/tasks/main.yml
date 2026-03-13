@@ -8,6 +8,8 @@
   file:
     path: "{{ n8n_data_dir }}"
     state: directory
+    owner: "1000"
+    group: "1000"
     mode: "0755"
 
 - name: Generate docker-compose for n8n
