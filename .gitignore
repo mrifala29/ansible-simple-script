@@ -7,6 +7,7 @@
 **/**.der
 
 inventory/baremetal.ini
+inventory/production.ini
 inventory/group_vars
 
 .env

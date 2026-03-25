@@ -37,9 +37,6 @@
     - role: platforms/superset
       tags: [platforms, superset]
 
-    - role: platforms/n8n
-      tags: [platforms, n8n]
-
 
 # ORCHESTRATION
 - name: Orchestration services
