@@ -1,56 +1,18 @@
----
-- name: Ensure ClickHouse directories are present
-  ansible.builtin.file:
+- name: Create ClickHouse directories
+  file:
     path: "{{ item }}"
     state: directory
-    owner: root
-    group: root
-    mode: "0755"
+    mode: '0755'
   loop:
-    - "{{ clickhouse_compose_dir }}"
     - "{{ clickhouse_data_dir }}"
     - "{{ clickhouse_config_dir }}"
 
-- name: Deploy ClickHouse docker-compose
-  ansible.builtin.template:
+- name: Copy docker-compose file
+  template:
     src: docker-compose.yml
-    dest: "{{ clickhouse_compose_dir }}/docker-compose.yml"
-    owner: root
-    group: root
-    mode: "0644"
-  notify: Restart clickhouse
+    dest: /opt/clickhouse/docker-compose.yml
 
-- name:clickhouse_container_name: clickhouse
-clickhouse_image: clickhouse/clickhouse-server:latest
-clickhouse_ports:
-  - "812diclickhouse_image: clickhouse/clickhoruclickhouse_ports:
-  - "8123:8123"
-  - "9000:9000"
-
-cn.  - "8123:8123"
--   - "9000:9000cl
-clickhouse_damunclickhouse_config_dir: /opt/clickhouse/ct_clickhouse_compose_dir: /opt/clickhouse
-clice:clickhouse_restart_policy: unless-stop: EOF
-
-cat > roles/databases/clickhouse/tasecaemplates/docker-compose.yml <<'EOF'
-version: "3.8"
-
-services:
-  clickhouse:
-    image: {{ clickhouse_image }}
-    container_name: {{ clickhouse_container_name }}
-    restart: {{ clickhouse_restart_policy }}
-
-    ports:
-      {% for port in clickhouse_ports %}
-      - "{{ port }}"
-      {% endfor %}
-
-    volumes:
-      - {{ clickhouse_data_dir }}:/var/lib/clickhouse
-      - {{ clickhouse_config_dir }}:/etc/clickhouse-server
-
-    ulimits:
-      nofile:
-        soft: 262144
-        hard: 262144
+- name: Run ClickHouse container
+  command: docker compose up -d
+  args:
+    chdir: /opt/clickhouse
