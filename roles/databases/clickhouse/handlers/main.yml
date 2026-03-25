@@ -1,0 +1,7 @@
+---
+- name: Restart clickhouse
+  community.docker.docker_compose_v2:
+    project_src: "{{ clickhouse_compose_dir }}"
+    state: present
+    recreate: always
+  become: true

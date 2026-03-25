@@ -88,6 +88,9 @@
     - role: databases/qdrant
       tags: [databases, qdrant]
 
+    - role: databases/clickhouse
+      tags: [databases, clickhouse]
+
 
 # MESSAGING
 - name: Messaging services
