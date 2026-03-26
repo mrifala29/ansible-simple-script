@@ -1,5 +1,7 @@
 **/docker-compose.yml
 **/docker-compose.j2
+**/docker-compose.yml.j2
+**/conf.j2
 **/Dockerfile
 **/Dockerfile.j2
 

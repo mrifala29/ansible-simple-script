@@ -97,6 +97,9 @@
     - role: messagings/rabbitmq
       tags: [messagings, rabbitmq]
 
+    - role: messagings/debezium
+      tags: [messagings, debezium]
+
 
 # STORAGE
 - name: Storage services
