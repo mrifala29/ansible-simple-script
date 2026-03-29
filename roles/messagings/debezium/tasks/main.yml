@@ -39,7 +39,9 @@
 
 
 
-- name: Start Debezium stack
+- name: Start Debezium stack (async)
   command: docker compose up -d
   args:
     chdir: "{{ debezium_base_dir }}"
+  async: 600
+  poll: 0
