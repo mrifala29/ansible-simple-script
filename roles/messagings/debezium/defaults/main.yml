@@ -7,7 +7,7 @@ debezium_network_name: cdc-debezium-network
 
 # Ports
 kafka_port: 9092
-debezium_connect_port: 9094
+debezium_connect_port: 9096
 kafka_ui_port: 9095
 
 # Enable optional services
