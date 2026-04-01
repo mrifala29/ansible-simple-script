@@ -16,3 +16,9 @@
   command: docker compose up -d
   args:
     chdir: /opt/clickhouse
+
+- name: Copy users config
+  template:
+    src: users.xml.j2
+    dest: "{{ clickhouse_config_dir }}/users.xml"
+  notify: restart clickhouse

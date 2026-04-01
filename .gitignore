@@ -5,6 +5,8 @@
 **/Dockerfile
 **/Dockerfile.j2
 
+**/users.xml.j2
+
 **/**.pem
 **/**.der
 

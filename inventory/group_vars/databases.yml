@@ -47,5 +47,5 @@ qdrant_base_dir: /opt/databases/qdrant
 
 clickhouse_ports:
   - "8123:8123"
-  - "9123:9123"
+  - "9123:9000"
 clickhouse_data_dir: /data/clickhouse
