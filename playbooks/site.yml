@@ -159,3 +159,6 @@
   roles:
     - role: apps/application
       tags: [apps]
+
+    - role: apps/qr-gen
+      tags: [apps, qr-gen]
