@@ -6,6 +6,7 @@
   loop:
     - "{{ clickhouse_data_dir }}"
     - "{{ clickhouse_config_dir }}"
+    - "{{ clickhouse_config_dir }}/users.d"
 
 - name: Copy docker-compose file
   template:
@@ -20,5 +21,5 @@
 - name: Copy users config
   template:
     src: users.xml.j2
-    dest: "{{ clickhouse_config_dir }}/users.xml"
+    dest: "{{ clickhouse_config_dir }}/users.d/custom.xml"
   notify: restart clickhouse
