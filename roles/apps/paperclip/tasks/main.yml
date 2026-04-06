@@ -1,21 +1,52 @@
 ---
-# Tasks to deploy paperclip via docker-compose
-- name: Ensure docker-compose directory exists
-  ansible.builtin.file:
-    path: "{{ paperclip.compose_dir }}"
+- name: Create paperclip base directory
+  file:
+    path: "{{ paperclip_base_dir }}"
     state: directory
     mode: "0755"
 
-- name: Render docker-compose for paperclip
-  ansible.builtin.template:
+- name: Create paperclip data directory
+  file:
+    path: "{{ paperclip_data_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Create PostgreSQL data directory
+  file:
+    path: "{{ postgres_data_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Pull Paperclip Docker image
+  command: docker pull {{ paperclip_image }}
+  register: docker_pull_result
+  changed_when: "'Downloaded newer image' in docker_pull_result.stdout or 'Pull complete' in docker_pull_result.stdout"
+
+- name: Pull PostgreSQL Docker image
+  command: docker pull {{ postgres_image }}
+  register: docker_pull_postgres
+  changed_when: "'Downloaded newer image' in docker_pull_postgres.stdout or 'Pull complete' in docker_pull_postgres.stdout"
+
+- name: Generate docker-compose for paperclip
+  template:
     src: docker-compose.yml.j2
-    dest: "{{ paperclip.compose_dir }}/docker-compose.yml"
+    dest: "{{ paperclip_base_dir }}/docker-compose.yml"
     mode: "0644"
   notify: Restart paperclip
 
-- name: Deploy paperclip with docker compose
-  become: true
-  ansible.builtin.command: docker compose up -d
+- name: Start paperclip containers (postgres + app)
+  command: docker compose up -d
   args:
-    chdir: "{{ paperclip.compose_dir }}"
-  when: not ansible_check_mode
+    chdir: "{{ paperclip_base_dir }}"
+  register: compose_up
+  changed_when: "'Started' in compose_up.stdout or 'Created' in compose_up.stdout"
+
+- name: Wait for Paperclip to be ready
+  uri:
+    url: "http://localhost:{{ paperclip_port }}"
+    status_code: 200
+    retries: 30
+    delay: 2
+  register: result
+  until: result.status == 200
+  ignore_errors: true

@@ -1,7 +1,6 @@
 ---
-# Handlers for llm-broker
 - name: Restart llm-broker
-  become: true
-  ansible.builtin.command: docker compose up -d
+  command: docker compose restart
   args:
-    chdir: "{{ llm_broker.compose_dir }}"
+    chdir: "{{ llm_broker_base_dir }}"
+  listen: "restart llm-broker"

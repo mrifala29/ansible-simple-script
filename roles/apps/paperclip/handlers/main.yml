@@ -1,7 +1,5 @@
 ---
-# Handlers for paperclip
 - name: Restart paperclip
-  become: true
-  ansible.builtin.command: docker compose up -d
+  command: docker compose up -d --force-recreate
   args:
-    chdir: "{{ paperclip.compose_dir }}"
+    chdir: "{{ paperclip_base_dir }}"

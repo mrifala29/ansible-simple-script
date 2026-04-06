@@ -1,15 +1,39 @@
 ---
-# Default variables for apps/paperclip
-paperclip:
-  name: paperclip
-  image: "ghcr.io/example/paperclip:latest"
-  container_name: "paperclip"
-  ports:
-    - "3111:3000"
-  env:
-    STORAGE_BACKEND: "s3"
-    MAX_UPLOAD_SIZE: "20M"
-    LOG_LEVEL: "info"
-  restart: "always"
-  volumes: []
-  compose_dir: "/opt/paperclip"
+# Paperclip Container Config
+paperclip_container_name: paperclip
+paperclip_image: ghcr.io/paperclipai/paperclip:latest
+
+# Directories
+paperclip_base_dir: /opt/paperclip
+paperclip_data_dir: "{{ paperclip_base_dir }}/data"
+
+# Port Configuration (edit if conflict with other services)
+# Paperclip API runs on port 3100 by default
+# Change paperclip_port to use different host port (e.g., 3101, 3102, etc.)
+paperclip_port: 3102:3100
+
+paperclip_restart_policy: unless-stopped
+
+# PostgreSQL Configuration
+postgres_container_name: paperclip-postgres
+postgres_image: postgres:15-alpine
+postgres_port: 5432
+postgres_db: paperclip
+postgres_user: paperclip
+postgres_password: paperclip_secure_password_change_this
+postgres_data_dir: "{{ paperclip_base_dir }}/postgres_data"
+
+# Paperclip Environment Variables
+paperclip_environment:
+  NODE_ENV: "production"
+  HOST: "0.0.0.0"
+  PORT: "3100"
+  SERVE_UI: "true"
+  PAPERCLIP_HOME: "/paperclip"
+  PAPERCLIP_INSTANCE_ID: "default"
+  PAPERCLIP_CONFIG: "/paperclip/instances/default/config.json"
+  PAPERCLIP_DEPLOYMENT_MODE: "authenticated"
+  PAPERCLIP_DEPLOYMENT_EXPOSURE: "private"
+  OPENCODE_ALLOW_ALL_MODELS: "true"
+  TZ: "Asia/Jakarta"
+  DATABASE_URL: "postgresql://{{ postgres_user }}:{{ postgres_password }}@{{ postgres_container_name }}:{{ postgres_port }}/{{ postgres_db }}"

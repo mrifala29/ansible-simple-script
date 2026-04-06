@@ -1,15 +1,29 @@
 ---
-# Default variables for platforms/llm-broker
-llm_broker:
-  name: llm-broker
-  image: "ghcr.io/example/llm-broker:latest"
-  container_name: "llm-broker"
-  ports:
-    - "8181:8080"
-  env:
-    DB_URL: "postgresql://llm_broker:password@localhost:5432/llm_broker"
-    AUTH_PROVIDERS: "openai"
-    LOG_LEVEL: "info"
-  restart: "always"
-  volumes: []
-  compose_dir: "/opt/llm-broker"
+# LLM Broker Container Config
+llm_broker_container_name: llm-broker
+llm_broker_image: ghcr.io/lm-code-generation/lm-code-generation:latest
+
+# Directories
+llm_broker_base_dir: /opt/llm-broker
+llm_broker_data_dir: "{{ llm_broker_base_dir }}/data"
+llm_broker_config_dir: "{{ llm_broker_base_dir }}/config"
+
+# Port Configuration (edit if conflict with other services)
+# LLM Broker API runs on port 8000 by default
+# Change llm_broker_port to use different host port (e.g., 8001, 8002, etc.)
+llm_broker_port: 8181:8000
+
+llm_broker_restart_policy: unless-stopped
+
+# LLM Broker Environment Variables
+llm_broker_environment:
+  LOG_LEVEL: "INFO"
+  HOST: "0.0.0.0"
+  PORT: "8181:8000"
+  TZ: "Asia/Jakarta"
+
+# Optional: Add supported LLM providers
+# Uncomment and configure for your LLM providers
+# llm_broker_openai_api_key: ""
+# llm_broker_anthropic_api_key: ""
+# llm_broker_huggingface_api_key: ""
