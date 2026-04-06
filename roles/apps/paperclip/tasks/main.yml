@@ -34,6 +34,14 @@
     mode: "0644"
   notify: Restart paperclip
 
+- name: Fix permission for paperclip data dir
+  file:
+    path: "{{ paperclip_data_dir }}"
+    state: directory
+    recurse: yes
+    owner: "1000"
+    group: "1000"
+
 - name: Start paperclip containers (postgres + app)
   command: docker compose up -d
   args:
@@ -44,9 +52,9 @@
 - name: Wait for Paperclip to be ready
   uri:
     url: "http://localhost:{{ paperclip_port }}"
-    status_code: 200
-    retries: 30
-    delay: 2
+    method: GET
   register: result
   until: result.status == 200
-  ignore_errors: true
+  retries: 5
+  delay: 2
+  failed_when: false
