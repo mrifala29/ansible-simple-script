@@ -1,0 +1,21 @@
+---
+# Tasks to deploy llm-broker via docker-compose
+- name: Ensure docker-compose directory exists
+  ansible.builtin.file:
+    path: "{{ llm_broker.compose_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Render docker-compose for llm-broker
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ llm_broker.compose_dir }}/docker-compose.yml"
+    mode: "0644"
+  notify: Restart llm-broker
+
+- name: Deploy llm-broker with docker compose
+  become: true
+  ansible.builtin.command: docker compose up -d
+  args:
+    chdir: "{{ llm_broker.compose_dir }}"
+  when: not ansible_check_mode

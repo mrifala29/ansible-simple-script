@@ -1,0 +1,7 @@
+---
+# Handlers for paperclip
+- name: Restart paperclip
+  become: true
+  ansible.builtin.command: docker compose up -d
+  args:
+    chdir: "{{ paperclip.compose_dir }}"
