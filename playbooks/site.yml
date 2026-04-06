@@ -37,6 +37,9 @@
     - role: platforms/superset
       tags: [platforms, superset]
 
+    - role: platforms/llm-broker
+      tags: [platforms, llm-broker]
+
 
 # ORCHESTRATION
 - name: Orchestration services
@@ -162,3 +165,6 @@
 
     - role: apps/qr-gen
       tags: [apps, qr-gen]
+
+    - role: apps/paperclip
+      tags: [apps, paperclip]

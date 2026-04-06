@@ -5,7 +5,7 @@ paperclip:
   image: "ghcr.io/example/paperclip:latest"
   container_name: "paperclip"
   ports:
-    - "3000:3000"
+    - "3111:3000"
   env:
     STORAGE_BACKEND: "s3"
     MAX_UPLOAD_SIZE: "20M"

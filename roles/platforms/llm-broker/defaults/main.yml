@@ -5,7 +5,7 @@ llm_broker:
   image: "ghcr.io/example/llm-broker:latest"
   container_name: "llm-broker"
   ports:
-    - "8080:8080"
+    - "8181:8080"
   env:
     DB_URL: "postgresql://llm_broker:password@localhost:5432/llm_broker"
     AUTH_PROVIDERS: "openai"
