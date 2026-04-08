@@ -21,11 +21,15 @@
   command: docker pull {{ paperclip_image }}
   register: docker_pull_result
   changed_when: "'Downloaded newer image' in docker_pull_result.stdout or 'Pull complete' in docker_pull_result.stdout"
+  async: 900
+  poll: 30
 
 - name: Pull PostgreSQL Docker image
   command: docker pull {{ postgres_image }}
   register: docker_pull_postgres
   changed_when: "'Downloaded newer image' in docker_pull_postgres.stdout or 'Pull complete' in docker_pull_postgres.stdout"
+  async: 900
+  poll: 30
 
 - name: Generate docker-compose for paperclip
   template:
