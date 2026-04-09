@@ -3,6 +3,14 @@
 llm_broker_container_name: llm-broker
 llm_broker_image: ghcr.io/lm-code-generation/lm-code-generation:latest
 
+# GitHub Container Registry Authentication (optional)
+# If image is private, set these variables in group_vars or inventory
+# Example: ghcr_username: "your-github-username"
+#          ghcr_token: "your-github-token"
+# Generate token at: https://github.com/settings/tokens (needs read:packages permission)
+# ghcr_username: ""
+# ghcr_token: ""
+
 # Directories
 llm_broker_base_dir: /opt/llm-broker
 llm_broker_data_dir: "{{ llm_broker_base_dir }}/data"

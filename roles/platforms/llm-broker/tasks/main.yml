@@ -17,6 +17,11 @@
     state: directory
     mode: "0755"
 
+- name: Login to GitHub Container Registry
+  command: "docker login -u {{ ghcr_username }} -p {{ ghcr_token }} ghcr.io"
+  when: ghcr_username is defined and ghcr_token is defined
+  no_log: true
+
 - name: Pull LLM Broker Docker image
   command: docker pull {{ llm_broker_image }}
   register: docker_pull_result
