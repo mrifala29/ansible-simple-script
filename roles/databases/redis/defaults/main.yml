@@ -16,3 +16,9 @@ redis_save_intervals:
 redis_timeout: 0
 redis_tcp_keepalive: 300
 redis_tcp_backlog: 511
+
+# Redis Auth
+redis_username: "Linkit360"
+redis_password: "L1nkit360"
+redis_requirepass: "L1nkit360"
+

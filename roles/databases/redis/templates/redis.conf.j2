@@ -25,9 +25,10 @@ save {{ save_interval }}
 save ""
 {% endif %}
 
-# Security
-requirepass {{ redis_password | default('') }}
+# Security - Redis Authentication
+requirepass {{ redis_requirepass }}
 
 # Performance
 hz 10
 dynamic-hz yes
+
