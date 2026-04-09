@@ -1,15 +1,69 @@
-- name: Update apt cache
+---
+- name: Wait for apt lock file to be released
+  shell: while sudo fuser /var/lib/apt/lists/lock >/dev/null 2>&1; do sleep 1; done
+  tags: redis_install
+
+- name: Update apt cache with retry
   apt:
     update_cache: yes
     cache_valid_time: 3600
+  register: apt_cache_update
+  until: apt_cache_update is succeeded
+  retries: 3
+  delay: 10
+  tags: redis_install
 
-- name: Install redis server
+- name: Install Redis server package
   apt:
     name: redis-server
     state: present
+  tags: redis_install
 
-- name: Ensure redis is running
+- name: Create redis log directory
+  file:
+    path: /var/log/redis
+    state: directory
+    owner: redis
+    group: redis
+    mode: '0755'
+  tags: redis_config
+
+- name: Copy Redis configuration
+  template:
+    src: redis.conf.j2
+    dest: /etc/redis/redis.conf
+    owner: redis
+    group: redis
+    mode: '0644'
+    backup: yes
+  notify: restart redis
+  tags: redis_config
+
+- name: Ensure Redis is started and enabled
   service:
     name: redis-server
     state: started
     enabled: yes
+  tags: redis_service
+
+- name: Wait for Redis to be ready
+  wait_for:
+    host: "{{ ansible_host | default('localhost') }}"
+    port: "{{ redis_port }}"
+    delay: 2
+    timeout: 30
+  tags: redis_service
+
+- name: Verify Redis is responding
+  command: redis-cli -p {{ redis_port }} PING
+  register: redis_ping_result
+  until: redis_ping_result.stdout | regex_search('PONG')
+  retries: 5
+  delay: 2
+  changed_when: false
+  tags: redis_verify
+
+- name: Display Redis status
+  debug:
+    msg: "Redis is running on port {{ redis_port }} - Response: {{ redis_ping_result.stdout }}"
+  tags: redis_verify
