@@ -1,37 +1,10 @@
----
-# LLM Broker Container Config
-llm_broker_container_name: llm-broker
-llm_broker_image: ghcr.io/lm-code-generation/lm-code-generation:latest
-
-# GitHub Container Registry Authentication (optional)
-# If image is private, set these variables in group_vars or inventory
-# Example: ghcr_username: "your-github-username"
-#          ghcr_token: "your-github-token"
-# Generate token at: https://github.com/settings/tokens (needs read:packages permission)
-# ghcr_username: ""
-# ghcr_token: ""
-
-# Directories
 llm_broker_base_dir: /opt/llm-broker
-llm_broker_data_dir: "{{ llm_broker_base_dir }}/data"
-llm_broker_config_dir: "{{ llm_broker_base_dir }}/config"
 
-# Port Configuration (edit if conflict with other services)
-# LLM Broker API runs on port 8000 by default
-# Change llm_broker_port to use different host port (e.g., 8001, 8002, etc.)
-llm_broker_port: 8181:8000
+llm_broker_port_host: 4100
+llm_broker_port_container: 4000
 
-llm_broker_restart_policy: unless-stopped
+llm_broker_image: ghcr.io/berriai/litellm:main
 
-# LLM Broker Environment Variables
-llm_broker_environment:
-  LOG_LEVEL: "INFO"
-  HOST: "0.0.0.0"
-  PORT: "8181:8000"
-  TZ: "Asia/Jakarta"
+llm_broker_container_name: llm-broker
 
-# Optional: Add supported LLM providers
-# Uncomment and configure for your LLM providers
-# llm_broker_openai_api_key: ""
-# llm_broker_anthropic_api_key: ""
-# llm_broker_huggingface_api_key: ""
+llm_broker_config_file: "{{ llm_broker_base_dir }}/config.yaml"

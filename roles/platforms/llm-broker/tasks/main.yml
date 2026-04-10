@@ -1,54 +1,30 @@
----
-- name: Create llm-broker base directory
+- name: Ensure base directory exists
   file:
     path: "{{ llm_broker_base_dir }}"
     state: directory
-    mode: "0755"
+    owner: root
+    group: root
+    mode: '0755'
 
-- name: Create llm-broker data directory
-  file:
-    path: "{{ llm_broker_data_dir }}"
-    state: directory
-    mode: "0755"
+- name: Create LiteLLM config file (dummy / no credential)
+  copy:
+    dest: "{{ llm_broker_config_file }}"
+    content: |
+      model_list: []
+    owner: root
+    group: root
+    mode: '0644'
 
-- name: Create llm-broker config directory
-  file:
-    path: "{{ llm_broker_config_dir }}"
-    state: directory
-    mode: "0755"
-
-- name: Login to GitHub Container Registry
-  command: "docker login -u {{ ghcr_username }} -p {{ ghcr_token }} ghcr.io"
-  when: ghcr_username is defined and ghcr_token is defined
-  no_log: true
-
-- name: Pull LLM Broker Docker image
-  command: docker pull {{ llm_broker_image }}
-  register: docker_pull_result
-  changed_when: "'Downloaded newer image' in docker_pull_result.stdout or 'Pull complete' in docker_pull_result.stdout"
-
-- name: Generate docker-compose for llm-broker
+- name: Copy docker-compose file
   template:
     src: docker-compose.yml.j2
     dest: "{{ llm_broker_base_dir }}/docker-compose.yml"
-    mode: "0644"
+    owner: root
+    group: root
+    mode: '0644'
   notify: Restart llm-broker
 
-- name: Start llm-broker container
+- name: Run docker compose
   command: docker compose up -d
   args:
     chdir: "{{ llm_broker_base_dir }}"
-  register: compose_up
-  changed_when: "'Started' in compose_up.stdout or 'Created' in compose_up.stdout"
-
-- name: Wait for LLM Broker to be ready
-  uri:
-    url: "http://localhost:8000/health"
-    status_code: 200
-    retries: 30
-    delay: 2
-  register: result
-  until: result.status == 200
-  ignore_errors: true
-  tags:
-    - llm-broker-wait
