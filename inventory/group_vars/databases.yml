@@ -3,7 +3,7 @@ tigerbeetle_port: 3010
 
 yugabytedb_version: "2.21.1.0-b271"
 yugabytedb_cluster_name: "prod-cluster"
-yugabytedb_data_dir: "/data/yugabytedb"
+yugabytedb_data_dir: "/data/database/yugabytedb"
 yugabytedb_conf_dir: "/etc/yugabytedb"
 yugabytedb_master_port: 7111
 yugabytedb_tserver_port: 9111
