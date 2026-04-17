@@ -52,6 +52,9 @@
     - role: orchestrations/kubernetes
       tags: [orchestrations, kubernetes]
 
+    - role: orchestrations/temporal
+      tags: [orchestrations, temporal]
+
 
 # DATABASES
 - name: Database services

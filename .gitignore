@@ -19,3 +19,4 @@ inventory/production.ini
 inventory/group_vars
 
 .env
+port.txt
