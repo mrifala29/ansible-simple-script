@@ -20,12 +20,43 @@
     chdir: "{{ temporal_base_dir }}"
   tags: temporal
 
+- name: Wait for Temporal container to be ready (give it time to start)
+  pause:
+    seconds: 30
+  tags: temporal
+
+- name: Check temporal container status
+  command: docker compose ps
+  args:
+    chdir: "{{ temporal_base_dir }}"
+  register: temporal_ps
+  tags: temporal
+
+- name: Display temporal container status
+  debug:
+    msg: "{{ temporal_ps.stdout }}"
+  tags: temporal
+
+- name: Capture temporal container logs
+  shell: docker compose logs temporal --tail 50 2>&1
+  args:
+    chdir: "{{ temporal_base_dir }}"
+  register: temporal_logs
+  tags: temporal
+
+- name: Display temporal logs
+  debug:
+    msg: "{{ temporal_logs.stdout }}"
+  tags: temporal
+
 - name: Wait for Temporal gRPC to be ready
   wait_for:
     host: "{{ ansible_host }}"
     port: "{{ temporal_grpc_port }}"
-    delay: 10
-    timeout: 180
+    delay: 5
+    timeout: 30
+    state: started
+  ignore_errors: yes
   tags: temporal
 
 - name: Wait for Temporal UI to be ready

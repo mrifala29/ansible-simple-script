@@ -16,6 +16,4 @@ temporal_db_host: "{{ ansible_host }}"
 
 temporal_visibility_db_name: temporal_visibility
 
-temporal_broadcast_address: "{{ ansible_host }}"
-
 temporal_restart_policy: unless-stopped
