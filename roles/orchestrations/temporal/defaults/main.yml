@@ -11,15 +11,11 @@ temporal_base_dir: /opt/temporal
 temporal_grpc_port: 7233        # temporal frontend gRPC
 temporal_ui_port: 8090          # temporal Web UI
 
-# Database backend (gunakan postgres yang sudah ada)
-temporal_db_host: "{{ ansible_host | default('localhost') }}"
-temporal_db_port: 5432
-temporal_db_name: temporal
-temporal_db_user: temporal
-temporal_db_password: temporal
+# Database backend (hardcoded di docker-compose.yml untuk keamanan)
+temporal_db_host: "{{ ansible_host }}"
 
 temporal_visibility_db_name: temporal_visibility
 
-temporal_broadcast_address: "{{ ansible_default_ipv4.address | default('127.0.0.1') }}"
+temporal_broadcast_address: "{{ ansible_host }}"
 
 temporal_restart_policy: unless-stopped

@@ -22,16 +22,16 @@
 
 - name: Wait for Temporal gRPC to be ready
   wait_for:
-    host: "127.0.0.1"
+    host: "{{ ansible_host }}"
     port: "{{ temporal_grpc_port }}"
-    delay: 5
-    timeout: 120
+    delay: 10
+    timeout: 180
   tags: temporal
 
 - name: Wait for Temporal UI to be ready
   wait_for:
-    host: "127.0.0.1"
+    host: "{{ ansible_host }}"
     port: "{{ temporal_ui_port }}"
-    delay: 3
-    timeout: 60
+    delay: 5
+    timeout: 120
   tags: temporal
