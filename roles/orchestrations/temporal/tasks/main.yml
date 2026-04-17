@@ -38,7 +38,7 @@
   tags: temporal
 
 - name: Capture temporal container logs
-  shell: docker compose logs temporal --tail 50 2>&1
+  shell: docker compose logs temporal --tail 10 2>&1
   args:
     chdir: "{{ temporal_base_dir }}"
   register: temporal_logs
