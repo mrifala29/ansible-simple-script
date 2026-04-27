@@ -16,7 +16,7 @@
 
 - name: Download prometheus
   get_url:
-    url: https://github.com/prometheus/prometheus/releases/download/v2.49.1/prometheus-2.49.1.linux-amd64.tar.gz
+    url: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz"
     dest: /tmp/prometheus.tar.gz
 
 - name: Extract prometheus
@@ -39,7 +39,7 @@
 
 - name: Copy prometheus config
   template:
-    src: prometheus.service.j2
+    src: prometheus.yml.j2
     dest: /etc/prometheus/prometheus.yml
     owner: prometheus
     group: prometheus
@@ -54,12 +54,16 @@
       After=network-online.target
 
       [Service]
-      User=prometheus
-      Group=prometheus
+      User={{ prometheus_user }}
+      Group={{ prometheus_user }}
       Type=simple
       ExecStart=/usr/local/bin/prometheus \
-        --config.file=/etc/prometheus/prometheus.yml \
-        --storage.tsdb.path=/var/lib/prometheus
+        --config.file={{ prometheus_config_path }} \
+        --storage.tsdb.path={{ prometheus_data_path }} \
+        --web.listen-address=:{{ prometheus_port }}
+
+      Restart=always
+      RestartSec=5
 
       [Install]
       WantedBy=multi-user.target
