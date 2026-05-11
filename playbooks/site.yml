@@ -148,6 +148,9 @@
     - role: observability/mimir
       tags: [observability, mimir]
 
+    - role: observability/opentelemetry
+      tags: [observability, opentelemetry]
+
 
 # TESTING (NON-PROD)
 - name: Testing tools
