@@ -1,2 +1,2 @@
 - name: restart yugabytedb
-  command: docker-compose -f {{ docker_compose_path }} restart
+  command: docker-compose -f {{ docker_compose_path }} up -d --force-recreate

@@ -40,4 +40,6 @@
   notify: restart yugabytedb
 
 - name: Start YugabyteDB
-  command: docker-compose -f {{ docker_compose_path }} up -d
+  command: docker-compose -f {{ docker_compose_path }} up -d --no-recreate
+  register: compose_up
+  changed_when: "'Started' in compose_up.stdout or 'Creating' in compose_up.stdout"
