@@ -3,13 +3,15 @@ tigerbeetle_port: 3010
 
 yugabytedb_version: "2.21.1.0-b271"
 yugabytedb_cluster_name: "prod-cluster"
-yugabytedb_data_dir: "/data/database/yugabytedb"
-yugabytedb_conf_dir: "/etc/yugabytedb"
+yugabytedb_base_dir: "/opt/yugabytedb"
+yugabytedb_data_dir: "/opt/yugabytedb/data"
+yugabytedb_log_dir: "/opt/yugabytedb/logs"
+yugabytedb_conf_dir: "/opt/yugabytedb/conf"
 yugabytedb_master_port: 7111
 yugabytedb_tserver_port: 9111
 yugabytedb_yql_port: 9142
 yugabytedb_ysql_port: 5533
-docker_compose_path: "/etc/yugabytedb/docker-compose.yml"
+docker_compose_path: "/opt/yugabytedb/docker-compose.yml"
 docker_compose_version: "v2.25.0"
 
 

@@ -1,3 +1,10 @@
+- name: Set vm.max_map_count for YugabyteDB
+  sysctl:
+    name: vm.max_map_count
+    value: '262144'
+    state: present
+    reload: yes
+
 - name: Install Docker
   apt:
     name: docker.io
@@ -22,8 +29,12 @@
     path: "{{ item }}"
     state: directory
     mode: '0755'
+    owner: '1000'
+    group: '1000'
   loop:
+    - "{{ yugabytedb_base_dir }}"
     - "{{ yugabytedb_data_dir }}"
+    - "{{ yugabytedb_log_dir }}"
     - "{{ yugabytedb_conf_dir }}"
     - "{{ docker_compose_path | dirname }}"
 
